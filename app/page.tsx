@@ -66,7 +66,7 @@ export default function Home() {
         <div aria-hidden="true" className="ambient ambient-one" />
         <div aria-hidden="true" className="ambient ambient-two" />
 
-        <div className="relative z-10 flex w-full max-w-3xl flex-col items-center">
+        <div className="relative z-10 flex w-full max-w-7xl flex-col items-center">
           <div className="mb-7 flex items-center gap-2 rounded-full border border-violet-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold text-violet-700 shadow-sm backdrop-blur">
             <Sparkles className="size-3.5" />
             Your neighbourhood, one request away
@@ -82,16 +82,16 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="anayah-bubble" role="status">
-              <span className="anayah-bubble-label">
-                <span aria-hidden="true" className="anayah-online-dot" />
-                Your local assistant
-              </span>
-              <span className="anayah-bubble-message">
-                Hi, I’m <strong>Anaiyah.</strong>
-              </span>
-              <span className="anayah-bubble-action">
-                Zend me <Sparkles aria-hidden="true" className="size-3" />
+            <div className="anayah-chat-cluster" role="status">
+              <div className="anayah-bubble">
+                <span className="anayah-bubble-message">
+                  Hi, I’m <strong>Anaiyah.</strong> Zend me.
+                </span>
+              </div>
+              <span className="anayah-thinking" aria-label="Anaiyah is thinking">
+                <i aria-hidden="true" />
+                <i aria-hidden="true" />
+                <i aria-hidden="true" />
               </span>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function Home() {
             Find trusted food vendors, artisans, logistics and professional services around you.
           </p>
 
-          <form onSubmit={submitSearch} className="search-surface mt-9 w-full p-2 sm:p-2.5">
+          <form onSubmit={submitSearch} className="search-surface mt-9 w-full max-w-3xl p-2 sm:p-2.5">
             <div className="flex min-w-0 flex-1 items-center gap-3 px-3 sm:px-4">
               <Search className="size-5 shrink-0 text-slate-400" />
               <label htmlFor="service-search" className="sr-only">
@@ -211,6 +211,60 @@ export default function Home() {
                       <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.7</strong> (146 Google reviews)</span>
                     </div>
                     <p className="result-note">Business details and opening hours are supplied by Google.</p>
+                    <div className="result-actions">
+                      <button type="button" className="result-secondary-action"><Phone className="size-4" /> Call</button>
+                      <button type="button" className="primary-cta result-primary-action"><Navigation className="size-4" /> Directions</button>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="result-card">
+                  <div className="result-image-wrap">
+                    <img src="/services-food.jpg" alt="Freshly prepared local food from Chika's Kitchen" />
+                    <span className="result-distance"><Navigation className="size-3" /> 1.9 km</span>
+                  </div>
+                  <div className="result-card-content">
+                    <div className="result-source result-source-zndux"><BadgeCheck className="size-3.5" /> Verified on Zndux</div>
+                    <div className="result-title-row">
+                      <div>
+                        <h3>Chika’s Kitchen</h3>
+                        <p>Home meals · Catering · Gwarinpa</p>
+                      </div>
+                      <span className="available-dot">Available now</span>
+                    </div>
+                    <div className="result-meta">
+                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.8</strong> (64)</span>
+                      <span><Clock3 className="size-4" /> Replies in 8 mins</span>
+                    </div>
+                    <p className="result-note">“Well packed, delicious and delivered exactly when promised.”</p>
+                    <div className="result-actions">
+                      <button type="button" className="result-secondary-action">View profile</button>
+                      <button type="button" className="primary-cta result-primary-action">
+                        Zend me
+                        <span className="search-button-avatar"><img src="/zndux-logo.jpeg" alt="" /></span>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="result-card">
+                  <div className="result-image-wrap">
+                    <img src="/services-delivery.jpg" alt="A SwiftDrop local delivery rider" />
+                    <span className="result-distance"><Navigation className="size-3" /> 2.3 km</span>
+                  </div>
+                  <div className="result-card-content">
+                    <div className="result-source result-source-google">G&nbsp; Listed on Google</div>
+                    <div className="result-title-row">
+                      <div>
+                        <h3>SwiftDrop Logistics</h3>
+                        <p>Pickup · Dispatch · Same-day delivery</p>
+                      </div>
+                      <span className="open-dot">Open now</span>
+                    </div>
+                    <div className="result-meta">
+                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.6</strong> (103)</span>
+                    </div>
+                    <p className="result-note">Fast local pickup and delivery details supplied by Google.</p>
                     <div className="result-actions">
                       <button type="button" className="result-secondary-action"><Phone className="size-4" /> Call</button>
                       <button type="button" className="primary-cta result-primary-action"><Navigation className="size-4" /> Directions</button>
