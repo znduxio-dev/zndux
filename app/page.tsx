@@ -8,10 +8,11 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
-  ExternalLink,
+  Globe2,
   LoaderCircle,
   MapPin,
   Navigation,
+  Phone,
   Search,
   SlidersHorizontal,
   Sparkles,
@@ -38,6 +39,10 @@ type NearbyPlace = {
   googleMapsUri: string;
   openNow: boolean | null;
   distanceKm: number | null;
+  websiteUri: string | null;
+  phoneNumber: string | null;
+  photoUrl: string | null;
+  photoAttribution: { name: string; uri: string | null } | null;
 };
 
 const defaultCoordinates = { latitude: 9.0765, longitude: 7.3986 };
@@ -284,9 +289,25 @@ export default function Home() {
                 {!isSearching ? visiblePlaces.map((place) => (
                   <article className="result-card" key={place.id}>
                     <div className="result-image-wrap">
-                      <img src={resultImage(place)} alt="" />
+                      <img
+                        src={place.photoUrl ?? resultImage(place)}
+                        alt={place.photoUrl ? `${place.name} from Google Maps` : ''}
+                        onError={(event) => {
+                          event.currentTarget.onerror = null;
+                          event.currentTarget.src = resultImage(place);
+                        }}
+                      />
                       {place.distanceKm !== null ? (
                         <span className="result-distance"><Navigation className="size-3" /> {place.distanceKm < 1 ? `${Math.round(place.distanceKm * 1000)} m` : `${place.distanceKm.toFixed(1)} km`}</span>
+                      ) : null}
+                      {place.photoAttribution ? (
+                        place.photoAttribution.uri ? (
+                          <a className="result-photo-credit" href={place.photoAttribution.uri} target="_blank" rel="noreferrer">
+                            Photo: {place.photoAttribution.name}
+                          </a>
+                        ) : (
+                          <span className="result-photo-credit">Photo: {place.photoAttribution.name}</span>
+                        )
                       ) : null}
                     </div>
                     <div className="result-card-content">
@@ -301,10 +322,23 @@ export default function Home() {
                       <div className="result-meta">
                         {place.rating !== null ? <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>{place.rating.toFixed(1)}</strong> ({place.userRatingCount.toLocaleString()} Google reviews)</span> : <span>New Google listing</span>}
                       </div>
-                      <p className="result-note">Business details, hours and reviews are supplied by Google.</p>
-                      <div className="result-actions result-actions-google">
-                        <a href={place.googleMapsUri} target="_blank" rel="noreferrer" className="primary-cta result-primary-action">
-                          Open in Google Maps <ExternalLink className="size-4" />
+                      <p className="result-note">Business details, contact options and reviews are supplied by Google.</p>
+                      <div className="result-contact-actions" aria-label={`Contact options for ${place.name}`}>
+                        {place.phoneNumber ? (
+                          <a href={`tel:${place.phoneNumber}`} className="result-contact-action" aria-label={`Call ${place.name}`} title="Call">
+                            <Phone className="size-4" aria-hidden="true" />
+                            <span>Call</span>
+                          </a>
+                        ) : null}
+                        {place.websiteUri ? (
+                          <a href={place.websiteUri} target="_blank" rel="noreferrer" className="result-contact-action" aria-label={`Visit ${place.name} website`} title="Website">
+                            <Globe2 className="size-4" aria-hidden="true" />
+                            <span>Website</span>
+                          </a>
+                        ) : null}
+                        <a href={place.googleMapsUri} target="_blank" rel="noreferrer" className="result-contact-action result-contact-action-primary" aria-label={`Open ${place.name} in Google Maps`} title="Google Maps">
+                          <Navigation className="size-4" aria-hidden="true" />
+                          <span>Maps</span>
                         </a>
                       </div>
                     </div>

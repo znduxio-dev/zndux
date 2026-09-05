@@ -14,8 +14,18 @@ type GooglePlace = {
   rating?: number;
   userRatingCount?: number;
   googleMapsUri?: string;
+  websiteUri?: string;
+  nationalPhoneNumber?: string;
+  internationalPhoneNumber?: string;
   primaryTypeDisplayName?: { text?: string };
   regularOpeningHours?: { openNow?: boolean };
+  photos?: Array<{
+    name?: string;
+    authorAttributions?: Array<{
+      displayName?: string;
+      uri?: string;
+    }>;
+  }>;
 };
 
 function isCoordinate(value: unknown, minimum: number, maximum: number): value is number {
@@ -84,8 +94,12 @@ export async function POST(request: Request) {
           'places.rating',
           'places.userRatingCount',
           'places.googleMapsUri',
+          'places.websiteUri',
+          'places.nationalPhoneNumber',
+          'places.internationalPhoneNumber',
           'places.primaryTypeDisplayName',
           'places.regularOpeningHours.openNow',
+          'places.photos',
         ].join(','),
       },
       body: JSON.stringify({
@@ -125,6 +139,9 @@ export async function POST(request: Request) {
             ? distanceInKilometres(latitude, longitude, placeLatitude, placeLongitude)
             : null;
 
+        const primaryPhoto = place.photos?.find((photo) => photo.name);
+        const photoAttribution = primaryPhoto?.authorAttributions?.[0];
+
         return {
           id: place.id!,
           name: place.displayName!.text!,
@@ -133,8 +150,19 @@ export async function POST(request: Request) {
           rating: place.rating ?? null,
           userRatingCount: place.userRatingCount ?? 0,
           googleMapsUri: place.googleMapsUri!,
+          websiteUri: place.websiteUri ?? null,
+          phoneNumber: place.internationalPhoneNumber ?? place.nationalPhoneNumber ?? null,
           openNow: place.regularOpeningHours?.openNow ?? null,
           distanceKm,
+          photoUrl: primaryPhoto?.name
+            ? `/api/places/photo?name=${encodeURIComponent(primaryPhoto.name)}`
+            : null,
+          photoAttribution: photoAttribution?.displayName
+            ? {
+                name: photoAttribution.displayName,
+                uri: photoAttribution.uri ?? null,
+              }
+            : null,
         };
       })
       .sort((placeA, placeB) => {
