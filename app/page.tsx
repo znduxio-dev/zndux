@@ -5,10 +5,13 @@ import {
   BadgeCheck,
   Bike,
   BriefcaseBusiness,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
+  ExternalLink,
+  LoaderCircle,
   MapPin,
   Navigation,
-  Phone,
   Search,
   SlidersHorizontal,
   Sparkles,
@@ -25,21 +28,86 @@ const quickServices = [
   { label: 'Professionals', icon: BriefcaseBusiness },
 ];
 
+type NearbyPlace = {
+  id: string;
+  name: string;
+  address: string;
+  category: string;
+  rating: number | null;
+  userRatingCount: number;
+  googleMapsUri: string;
+  openNow: boolean | null;
+  distanceKm: number | null;
+};
+
+const defaultCoordinates = { latitude: 9.0765, longitude: 7.3986 };
+
+function resultImage(place: NearbyPlace) {
+  const description = `${place.category} ${place.name}`.toLowerCase();
+  if (/restaurant|food|cater|bakery|meal|kitchen/.test(description)) return '/services-food.jpg';
+  if (/delivery|courier|logistics|transport/.test(description)) return '/services-delivery.jpg';
+  if (/repair|plumb|electric|artisan|mechanic|technician/.test(description)) return '/services-artisan.jpg';
+  return '/about-find-service.jpg';
+}
+
 export default function Home() {
   const [query, setQuery] = useState('');
   const [message, setMessage] = useState('');
   const [location, setLocation] = useState('Abuja, Nigeria');
   const [submittedQuery, setSubmittedQuery] = useState('');
+  const [coordinates, setCoordinates] = useState(defaultCoordinates);
+  const [places, setPlaces] = useState<NearbyPlace[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState('');
+  const [resultPage, setResultPage] = useState(0);
 
-  function submitSearch(event: React.FormEvent<HTMLFormElement>) {
+  const hasZnduxMatch = /plumb|repair|artisan|handyman|home service/i.test(submittedQuery);
+  const totalResults = places.length + (hasZnduxMatch ? 1 : 0);
+  const totalPages = Math.max(1, Math.ceil(totalResults / 10));
+  const resultStart = resultPage * 10;
+  const showZnduxProvider = hasZnduxMatch && resultPage === 0;
+  const googleStart = hasZnduxMatch ? Math.max(0, resultStart - 1) : resultStart;
+  const visiblePlaces = places.slice(googleStart, googleStart + 10 - (showZnduxProvider ? 1 : 0));
+
+  async function submitSearch(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     const need = query.trim();
-    setSubmittedQuery(need || 'trusted services');
-    setMessage(
-      need
-        ? `Finding trusted ${need.toLowerCase()} near ${location}…`
-        : 'Tell us what you need and we’ll find the closest trusted provider.',
-    );
+    if (!need) {
+      setMessage('Tell us what you need and we’ll find the closest trusted provider.');
+      return;
+    }
+
+    setSubmittedQuery(need);
+    setResultPage(0);
+    setMessage(`Finding trusted ${need.toLowerCase()} near ${location}…`);
+    setSearchError('');
+    setIsSearching(true);
+
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: need, ...coordinates }),
+      });
+      const payload = (await response.json()) as { places?: NearbyPlace[]; error?: string };
+
+      if (!response.ok) throw new Error(payload.error ?? 'Search is unavailable right now.');
+
+      setPlaces(payload.places ?? []);
+      const resultCount = (payload.places?.length ?? 0) + (/plumb|repair|artisan|handyman|home service/i.test(need) ? 1 : 0);
+      setMessage(
+        resultCount
+          ? `Found ${resultCount} nearby result${resultCount === 1 ? '' : 's'}.`
+          : `No Google listings matched “${need}” nearby. Try a broader search.`,
+      );
+    } catch (error) {
+      setPlaces([]);
+      const errorMessage = error instanceof Error ? error.message : 'Search is unavailable right now.';
+      setSearchError(errorMessage);
+      setMessage('');
+    } finally {
+      setIsSearching(false);
+    }
   }
 
   function useLocation() {
@@ -50,7 +118,11 @@ export default function Home() {
 
     setMessage('Getting your location…');
     navigator.geolocation.getCurrentPosition(
-      () => {
+      (position) => {
+        setCoordinates({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
         setLocation('Current location');
         setMessage('Location found. What can we help you find?');
       },
@@ -117,10 +189,10 @@ export default function Home() {
                 className="h-12 min-w-0 flex-1 bg-transparent text-base text-slate-900 outline-none placeholder:text-slate-400"
               />
             </div>
-            <button type="submit" className="search-button" aria-label="Zend me">
-              <span className="hidden sm:inline">Zend me</span>
+            <button type="submit" className="search-button" aria-label="Zend me" disabled={isSearching}>
+              <span className="hidden sm:inline">{isSearching ? 'Searching…' : 'Zend me'}</span>
               <span aria-hidden="true" className="search-button-avatar">
-                <img src="/zndux-logo.jpeg" alt="" />
+                {isSearching ? <LoaderCircle className="size-4 animate-spin text-violet-700" /> : <img src="/zndux-logo.jpeg" alt="" />}
               </span>
             </button>
           </form>
@@ -163,8 +235,24 @@ export default function Home() {
                 <button type="button" className="results-filter"><SlidersHorizontal className="size-4" /> Filters</button>
               </div>
 
-              <div className="results-grid">
-                <article className="result-card result-card-featured">
+              {searchError ? (
+                <div className="results-error" role="alert">
+                  <strong>Anaiyah couldn’t complete that search.</strong>
+                  <span>{searchError}</span>
+                </div>
+              ) : null}
+
+              <div className="results-grid" aria-busy={isSearching}>
+                {isSearching
+                  ? Array.from({ length: 4 }, (_, index) => (
+                      <div className="result-card result-card-loading" key={index} aria-hidden="true">
+                        <span />
+                        <div><i /><i /><i /></div>
+                      </div>
+                    ))
+                  : null}
+
+                {!isSearching && showZnduxProvider ? <article className="result-card result-card-featured">
                   <div className="result-image-wrap">
                     <img src="/services-artisan.jpg" alt="Musa from QuickFix Home Services at work" />
                     <span className="result-distance"><Navigation className="size-3" /> 0.8 km</span>
@@ -191,91 +279,58 @@ export default function Home() {
                       </button>
                     </div>
                   </div>
-                </article>
+                </article> : null}
 
-                <article className="result-card">
-                  <div className="result-image-wrap">
-                    <img src="/about-find-service.jpg" alt="A local home-service professional" />
-                    <span className="result-distance"><Navigation className="size-3" /> 1.4 km</span>
-                  </div>
-                  <div className="result-card-content">
-                    <div className="result-source result-source-google">G&nbsp; Listed on Google</div>
-                    <div className="result-title-row">
-                      <div>
-                        <h3>Apex Home Care</h3>
-                        <p>Home services · Wuse 2, Abuja</p>
+                {!isSearching ? visiblePlaces.map((place) => (
+                  <article className="result-card" key={place.id}>
+                    <div className="result-image-wrap">
+                      <img src={resultImage(place)} alt="" />
+                      {place.distanceKm !== null ? (
+                        <span className="result-distance"><Navigation className="size-3" /> {place.distanceKm < 1 ? `${Math.round(place.distanceKm * 1000)} m` : `${place.distanceKm.toFixed(1)} km`}</span>
+                      ) : null}
+                    </div>
+                    <div className="result-card-content">
+                      <div className="result-source result-source-google"><span className="google-g">G</span> Listed on Google Maps</div>
+                      <div className="result-title-row">
+                        <div>
+                          <h3>{place.name}</h3>
+                          <p>{place.category} · {place.address}</p>
+                        </div>
+                        {place.openNow !== null ? <span className={place.openNow ? 'open-dot' : 'closed-dot'}>{place.openNow ? 'Open now' : 'Closed'}</span> : null}
                       </div>
-                      <span className="open-dot">Open now</span>
-                    </div>
-                    <div className="result-meta">
-                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.7</strong> (146 Google reviews)</span>
-                    </div>
-                    <p className="result-note">Business details and opening hours are supplied by Google.</p>
-                    <div className="result-actions">
-                      <button type="button" className="result-secondary-action"><Phone className="size-4" /> Call</button>
-                      <button type="button" className="primary-cta result-primary-action"><Navigation className="size-4" /> Directions</button>
-                    </div>
-                  </div>
-                </article>
-
-                <article className="result-card">
-                  <div className="result-image-wrap">
-                    <img src="/services-food.jpg" alt="Freshly prepared local food from Chika's Kitchen" />
-                    <span className="result-distance"><Navigation className="size-3" /> 1.9 km</span>
-                  </div>
-                  <div className="result-card-content">
-                    <div className="result-source result-source-zndux"><BadgeCheck className="size-3.5" /> Verified on Zndux</div>
-                    <div className="result-title-row">
-                      <div>
-                        <h3>Chika’s Kitchen</h3>
-                        <p>Home meals · Catering · Gwarinpa</p>
+                      <div className="result-meta">
+                        {place.rating !== null ? <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>{place.rating.toFixed(1)}</strong> ({place.userRatingCount.toLocaleString()} Google reviews)</span> : <span>New Google listing</span>}
                       </div>
-                      <span className="available-dot">Available now</span>
-                    </div>
-                    <div className="result-meta">
-                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.8</strong> (64)</span>
-                      <span><Clock3 className="size-4" /> Replies in 8 mins</span>
-                    </div>
-                    <p className="result-note">“Well packed, delicious and delivered exactly when promised.”</p>
-                    <div className="result-actions">
-                      <button type="button" className="result-secondary-action">View profile</button>
-                      <button type="button" className="primary-cta result-primary-action">
-                        Zend me
-                        <span className="search-button-avatar"><img src="/zndux-logo.jpeg" alt="" /></span>
-                      </button>
-                    </div>
-                  </div>
-                </article>
-
-                <article className="result-card">
-                  <div className="result-image-wrap">
-                    <img src="/services-delivery.jpg" alt="A SwiftDrop local delivery rider" />
-                    <span className="result-distance"><Navigation className="size-3" /> 2.3 km</span>
-                  </div>
-                  <div className="result-card-content">
-                    <div className="result-source result-source-google">G&nbsp; Listed on Google</div>
-                    <div className="result-title-row">
-                      <div>
-                        <h3>SwiftDrop Logistics</h3>
-                        <p>Pickup · Dispatch · Same-day delivery</p>
+                      <p className="result-note">Business details, hours and reviews are supplied by Google.</p>
+                      <div className="result-actions result-actions-google">
+                        <a href={place.googleMapsUri} target="_blank" rel="noreferrer" className="primary-cta result-primary-action">
+                          Open in Google Maps <ExternalLink className="size-4" />
+                        </a>
                       </div>
-                      <span className="open-dot">Open now</span>
                     </div>
-                    <div className="result-meta">
-                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.6</strong> (103)</span>
-                    </div>
-                    <p className="result-note">Fast local pickup and delivery details supplied by Google.</p>
-                    <div className="result-actions">
-                      <button type="button" className="result-secondary-action"><Phone className="size-4" /> Call</button>
-                      <button type="button" className="primary-cta result-primary-action"><Navigation className="size-4" /> Directions</button>
-                    </div>
-                  </div>
-                </article>
+                  </article>
+                )) : null}
               </div>
+
+              {!isSearching && !searchError && totalResults === 0 ? (
+                <div className="results-empty">Try a service name such as “plumber”, “restaurant”, “tailor” or “delivery”.</div>
+              ) : null}
+
+              {!isSearching && !searchError && totalResults > 10 ? (
+                <nav className="results-pagination" aria-label="Search result pages">
+                  <button type="button" disabled={resultPage === 0} onClick={() => setResultPage((page) => Math.max(0, page - 1))}>
+                    <ChevronLeft className="size-4" /> Previous
+                  </button>
+                  <span>Page {resultPage + 1} of {totalPages} · {totalResults} results</span>
+                  <button type="button" disabled={resultPage >= totalPages - 1} onClick={() => setResultPage((page) => Math.min(totalPages - 1, page + 1))}>
+                    Next <ChevronRight className="size-4" />
+                  </button>
+                </nav>
+              ) : null}
 
               <div className="results-legend">
                 <span><BadgeCheck className="size-4 text-violet-600" /> Zndux providers can receive requests directly.</span>
-                <span><span className="google-g">G</span> Google listings open through call or directions.</span>
+                <span><span className="google-g">G</span> Google Maps listings open directly in Google Maps.</span>
               </div>
             </section>
           ) : null}
