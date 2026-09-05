@@ -1,5 +1,7 @@
 import { sites } from '@openai/sites-vite-plugin';
-import tailwindcss from '@tailwindcss/postcss';
+import tailwindcssPostcss from '@tailwindcss/postcss';
+import tailwindcssVite from '@tailwindcss/vite';
+import { nitro } from 'nitro/vite';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import hostingConfig from './.openai/hosting.json';
@@ -11,6 +13,7 @@ const { d1, r2 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === 'seatbelt';
+const isVercelBuild = Boolean(process.env.VERCEL || process.env.NITRO_PRESET === 'vercel');
 
 const localBindingConfig = {
   main: 'vinext/server/fetch-handler',
@@ -35,6 +38,12 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async () => {
+  if (isVercelBuild) {
+    return {
+      plugins: [vinext(), tailwindcssVite(), nitro()],
+    };
+  }
+
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= 'false';
@@ -45,7 +54,7 @@ export default defineConfig(async () => {
   const { cloudflare } = await import('@cloudflare/vite-plugin');
 
   return {
-    css: { postcss: { plugins: [tailwindcss()] } },
+    css: { postcss: { plugins: [tailwindcssPostcss()] } },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
