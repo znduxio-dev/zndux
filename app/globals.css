@@ -147,31 +147,104 @@ summary:focus-visible {
   position: absolute;
   bottom: -2.25rem;
   left: 50%;
-  width: max-content;
-  max-width: min(15rem, 78vw);
+  display: grid;
+  width: 11.5rem;
   transform: translateX(-50%);
-  border: 1px solid rgba(226, 214, 235, 0.95);
-  border-radius: 1rem 1rem 1rem 0.35rem;
-  background: rgba(255, 255, 255, 0.96);
-  padding: 0.7rem 0.95rem;
+  border: 1px solid transparent;
+  border-radius: 1.15rem 1.15rem 1.15rem 0.35rem;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.97)) padding-box,
+    linear-gradient(100deg, rgba(111, 45, 168, 0.55), rgba(210, 11, 114, 0.45), rgba(255, 132, 18, 0.5)) border-box;
+  padding: 0.75rem 0.85rem 0.7rem;
   color: #4b2a5f;
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.2;
-  box-shadow: 0 12px 32px rgba(58, 27, 77, 0.13);
+  text-align: left;
+  box-shadow:
+    0 16px 40px rgba(58, 27, 77, 0.15),
+    0 4px 12px rgba(58, 27, 77, 0.07);
+  backdrop-filter: blur(16px);
   animation: anayah-pop 420ms cubic-bezier(0.2, 0.85, 0.25, 1.2) both;
 }
 
+.anayah-bubble::before {
+  position: absolute;
+  top: -0.43rem;
+  left: 1.65rem;
+  width: 0.82rem;
+  height: 0.82rem;
+  transform: rotate(45deg);
+  border-top: 1px solid rgba(111, 45, 168, 0.45);
+  border-left: 1px solid rgba(111, 45, 168, 0.45);
+  background: rgba(255, 255, 255, 0.98);
+  content: '';
+}
+
+.anayah-bubble-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #8c7698;
+  font-size: 0.61rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.anayah-online-dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #2bbf73;
+  box-shadow: 0 0 0 3px rgba(43, 191, 115, 0.12);
+}
+
+.anayah-bubble-message {
+  margin-top: 0.42rem;
+  color: #382140;
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
 .anayah-bubble strong {
-  color: #762ca6;
+  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 70%, #ff8412 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+.anayah-bubble-action {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 58%, #f06b22 100%);
+  padding: 0.34rem 0.58rem;
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  box-shadow: 0 5px 13px rgba(159, 28, 117, 0.2);
 }
 
 @media (min-width: 640px) {
   .anayah-bubble {
-    top: 2.15rem;
+    top: 2.3rem;
     bottom: auto;
-    left: calc(100% - 0.7rem);
+    left: calc(100% - 0.3rem);
     transform: none;
+  }
+
+  .anayah-bubble::before {
+    top: 1.35rem;
+    left: -0.43rem;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(111, 45, 168, 0.45);
+    border-left: 1px solid rgba(111, 45, 168, 0.45);
   }
 }
 

@@ -70,13 +70,22 @@ export default function Home() {
               <div className="size-full overflow-hidden rounded-full bg-white">
                 <img
                   src="/zndux-logo.jpeg"
-                  alt="Anayah, your Zndux assistant"
+                  alt="Anaiyah, your Zndux assistant"
                   className="size-full scale-[1.65] translate-y-[4%] object-cover"
                 />
               </div>
             </div>
             <div className="anayah-bubble" role="status">
-              Hi, I’m <strong>Anayah.</strong> Zend me.
+              <span className="anayah-bubble-label">
+                <span aria-hidden="true" className="anayah-online-dot" />
+                Your local assistant
+              </span>
+              <span className="anayah-bubble-message">
+                Hi, I’m <strong>Anaiyah.</strong>
+              </span>
+              <span className="anayah-bubble-action">
+                Zend me <Sparkles aria-hidden="true" className="size-3" />
+              </span>
             </div>
           </div>
 
