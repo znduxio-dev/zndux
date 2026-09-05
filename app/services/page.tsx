@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import {
   ArrowRight,
   Bike,
@@ -71,6 +72,15 @@ export default function ServicesPage() {
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.18em] text-violet-300">How it works</span>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">A shorter path from need to done.</h2>
+              <figure className="services-channel-visual">
+                <Image
+                  src="/zndux-how-it-works-banner.jpg"
+                  alt="Zndux banner featuring local shoppers and the Zndux brand"
+                  width={3000}
+                  height={1000}
+                  sizes="(min-width: 1024px) 34vw, 100vw"
+                />
+              </figure>
             </div>
             <ol className="grid gap-4 sm:grid-cols-3">
               {[
