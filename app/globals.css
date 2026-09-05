@@ -24,6 +24,9 @@
   --border: #e8e3ef;
   --ring: #8a43bf;
   --radius: 1rem;
+  --zndux-button-gradient: linear-gradient(100deg, #6f2da8 5%, #d20b72 58%, #f06b22 100%);
+  --zndux-button-shadow: 0 8px 20px rgba(159, 28, 117, 0.24);
+  --zndux-button-shadow-hover: 0 12px 26px rgba(159, 28, 117, 0.3);
 }
 
 .dark {
@@ -113,17 +116,18 @@ summary:focus-visible {
   align-items: center;
   gap: 0.45rem;
   border-radius: 999px;
-  background: #f2ebf8;
+  background: var(--zndux-button-gradient);
   padding: 0.72rem 1.05rem;
-  color: #61258f;
+  color: white;
   font-size: 0.82rem;
   font-weight: 700;
   text-decoration: none;
+  box-shadow: var(--zndux-button-shadow);
   transition: 180ms ease;
 }
 
 .provider-button:hover {
-  background: #e9dbf3;
+  box-shadow: var(--zndux-button-shadow-hover);
   transform: translateY(-1px);
 }
 
@@ -221,7 +225,7 @@ summary:focus-visible {
   gap: 0.3rem;
   margin-top: 0.5rem;
   border-radius: 999px;
-  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 58%, #f06b22 100%);
+  background: var(--zndux-button-gradient);
   padding: 0.34rem 0.58rem;
   color: white;
   font-size: 0.68rem;
@@ -303,17 +307,17 @@ summary:focus-visible {
   gap: 0.5rem;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 58%, #f06b22 100%);
+  background: var(--zndux-button-gradient);
   padding: 0 1.15rem;
   color: white;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(159, 28, 117, 0.24);
+  box-shadow: var(--zndux-button-shadow);
   cursor: pointer;
   transition: 180ms ease;
 }
 
 .search-button:hover {
-  box-shadow: 0 12px 26px rgba(159, 28, 117, 0.3);
+  box-shadow: var(--zndux-button-shadow-hover);
   transform: translateY(-1px);
 }
 
@@ -630,20 +634,20 @@ summary:focus-visible {
   justify-content: center;
   gap: 0.55rem;
   border: 0;
-  border-radius: 0.9rem;
-  background: #6f2da8;
+  border-radius: 999px;
+  background: var(--zndux-button-gradient);
   padding: 0 1.2rem;
   color: white;
   font-size: 0.9rem;
   font-weight: 750;
   text-decoration: none;
-  box-shadow: 0 8px 22px rgba(111, 45, 168, 0.2);
+  box-shadow: var(--zndux-button-shadow);
   cursor: pointer;
   transition: 180ms ease;
 }
 
 .primary-cta:hover {
-  background: #5f248f;
+  box-shadow: var(--zndux-button-shadow-hover);
   transform: translateY(-1px);
 }
 
