@@ -223,6 +223,7 @@ export default function ServicesPage() {
               <h3 className="mt-5 text-2xl font-semibold text-slate-950">You’re on the early provider list.</h3>
               <p className="mt-3 max-w-sm text-sm leading-6 text-slate-500">We’ll contact you when provider onboarding opens in your area.</p>
               <button type="button" onClick={() => setSubmitted(false)} className="mt-6 text-sm font-bold text-violet-700">Submit another service</button>
+              <a href="/provider" className="primary-cta mt-5">Start profile setup <ArrowRight className="size-4" /></a>
             </div>
           ) : (
             <form
@@ -258,6 +259,7 @@ export default function ServicesPage() {
                 <input id="provider-contact" required placeholder="How should we reach you?" />
               </div>
               <button type="submit" className="primary-cta">Join as a provider <ArrowRight className="size-4" /></button>
+              <a href="/provider" className="provider-setup-link">Already invited? Access provider setup <ArrowRight className="size-4" /></a>
             </form>
           )}
         </div>

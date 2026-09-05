@@ -184,7 +184,7 @@ export default function Home() {
                     </div>
                     <p className="result-note">“Fast, tidy and very professional. Fixed the leak on the first visit.”</p>
                     <div className="result-actions">
-                      <a href="/services#provider-profile" className="result-secondary-action">View profile</a>
+                      <a href="/providers/musa-quickfix" className="result-secondary-action">View profile</a>
                       <button type="button" className="primary-cta result-primary-action">
                         Zend me
                         <span className="search-button-avatar"><img src="/zndux-logo.jpeg" alt="" /></span>

@@ -1,7 +1,7 @@
 import { Menu } from 'lucide-react';
 
 type SiteHeaderProps = {
-  active: 'app' | 'services' | 'about';
+  active: 'app' | 'services' | 'about' | 'provider';
 };
 
 const links = [
@@ -31,8 +31,8 @@ export function SiteHeader({ active }: SiteHeaderProps) {
         ))}
       </nav>
 
-      <a href="/services#join" className="provider-button hidden sm:inline-flex">
-        List your service
+      <a href="/provider" className="provider-button hidden sm:inline-flex">
+        Provider access
         <ArrowUpRightIcon />
       </a>
 
@@ -46,6 +46,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
               {link.label}
             </a>
           ))}
+          <a href="/provider" aria-current={active === 'provider' ? 'page' : undefined}>Provider access</a>
         </nav>
       </details>
     </header>
