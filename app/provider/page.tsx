@@ -82,7 +82,8 @@ export default function ProviderSetupPage() {
             <h1>Your profile is ready for review.</h1>
             <p>Anaiyah has saved your information. Once Zndux verifies your details, nearby customers can discover and Zend you directly.</p>
             <div className="provider-review-state"><Clock3 className="size-5" /><div><strong>Verification in progress</strong><span>Usually completed within 24 hours</span></div></div>
-            <a href="/providers/musa-quickfix" className="primary-cta">Preview public profile <ArrowRight className="size-4" /></a>
+            <a href="/provider/dashboard" className="primary-cta">Open provider dashboard <ArrowRight className="size-4" /></a>
+            <a href="/providers/musa-quickfix" className="provider-public-preview-link">Preview customer-facing profile</a>
             <button type="button" className="provider-text-button" onClick={() => { setScreen('setup'); setStep(0); }}>Edit profile details</button>
           </div>
         </section>
