@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   BadgeCheck,
   Bike,
@@ -10,15 +10,18 @@ import {
   Clock3,
   Globe2,
   LoaderCircle,
+  LocateFixed,
   MapPin,
   Navigation,
   Phone,
+  PencilLine,
   Search,
   SlidersHorizontal,
   Sparkles,
   Star,
   Utensils,
   Wrench,
+  X,
 } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 
@@ -45,6 +48,8 @@ type NearbyPlace = {
   photoAttribution: { name: string; uri: string | null } | null;
 };
 
+type LocationSuggestion = { id: string; label: string };
+
 const defaultCoordinates = { latitude: 9.0765, longitude: 7.3986 };
 
 function resultImage(place: NearbyPlace) {
@@ -65,6 +70,11 @@ export default function Home() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState('');
   const [resultPage, setResultPage] = useState(0);
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
+  const [locationQuery, setLocationQuery] = useState('');
+  const [locationSuggestions, setLocationSuggestions] = useState<LocationSuggestion[]>([]);
+  const [isLocating, setIsLocating] = useState(false);
+  const [isResolvingLocation, setIsResolvingLocation] = useState(false);
 
   const hasZnduxMatch = /plumb|repair|artisan|handyman|home service/i.test(submittedQuery);
   const totalResults = places.length + (hasZnduxMatch ? 1 : 0);
@@ -73,6 +83,35 @@ export default function Home() {
   const showZnduxProvider = hasZnduxMatch && resultPage === 0;
   const googleStart = hasZnduxMatch ? Math.max(0, resultStart - 1) : resultStart;
   const visiblePlaces = places.slice(googleStart, googleStart + 10 - (showZnduxProvider ? 1 : 0));
+
+  useEffect(() => {
+    const input = locationQuery.trim();
+    if (!showLocationSearch || input.length < 2) {
+      setLocationSuggestions([]);
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch('/api/location', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'suggest', input, ...coordinates }),
+          signal: controller.signal,
+        });
+        const payload = (await response.json()) as { suggestions?: LocationSuggestion[] };
+        if (response.ok) setLocationSuggestions(payload.suggestions ?? []);
+      } catch (error) {
+        if (!(error instanceof Error && error.name === 'AbortError')) setLocationSuggestions([]);
+      }
+    }, 280);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [coordinates.latitude, coordinates.longitude, locationQuery, showLocationSearch]);
 
   async function submitSearch(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -117,10 +156,12 @@ export default function Home() {
 
   function useLocation() {
     if (!navigator.geolocation) {
-      setMessage('Location is unavailable on this device.');
+      setShowLocationSearch(true);
+      setMessage('GPS is unavailable. Type your area below instead.');
       return;
     }
 
+    setIsLocating(true);
     setMessage('Getting your location…');
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -129,10 +170,45 @@ export default function Home() {
           longitude: position.coords.longitude,
         });
         setLocation('Current location');
+        setShowLocationSearch(false);
         setMessage('Location found. What can we help you find?');
+        setIsLocating(false);
       },
-      () => setMessage('We could not access your location. You can still search nearby.'),
+      () => {
+        setIsLocating(false);
+        setShowLocationSearch(true);
+        setMessage('We could not detect your location. Type your area below instead.');
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
     );
+  }
+
+  async function selectLocation(suggestion: LocationSuggestion) {
+    setIsResolvingLocation(true);
+    setMessage(`Setting your location to ${suggestion.label}…`);
+    try {
+      const response = await fetch('/api/location', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'resolve', placeId: suggestion.id }),
+      });
+      const payload = (await response.json()) as {
+        location?: { label: string; address: string | null; latitude: number; longitude: number };
+        error?: string;
+      };
+      if (!response.ok || !payload.location) throw new Error(payload.error ?? 'Location unavailable.');
+
+      setCoordinates({ latitude: payload.location.latitude, longitude: payload.location.longitude });
+      setLocation(payload.location.label);
+      setLocationQuery('');
+      setLocationSuggestions([]);
+      setShowLocationSearch(false);
+      setMessage(`Location set to ${payload.location.label}. Search results will be nearby.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'We could not use that location.');
+    } finally {
+      setIsResolvingLocation(false);
+    }
   }
 
   return (
@@ -202,14 +278,53 @@ export default function Home() {
             </button>
           </form>
 
-          <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-3 text-sm">
-            <button onClick={useLocation} className="location-chip" type="button">
-              <MapPin className="size-4 text-violet-600" />
+          <div className="mt-4 flex w-full flex-wrap items-center justify-center gap-2 text-sm">
+            <button onClick={useLocation} className="location-chip" type="button" disabled={isLocating}>
+              {isLocating ? <LoaderCircle className="size-4 animate-spin text-violet-600" /> : <LocateFixed className="size-4 text-violet-600" />}
               {location}
+            </button>
+            <button onClick={() => setShowLocationSearch((visible) => !visible)} className="location-manual-trigger" type="button" aria-expanded={showLocationSearch}>
+              <PencilLine className="size-3.5" /> Enter location
             </button>
             <span className="hidden text-slate-300 sm:inline">•</span>
             <span className="text-slate-500">Available through web, social and USSD</span>
           </div>
+
+          {showLocationSearch ? (
+            <div className="location-picker">
+              <div className="location-picker-input">
+                <MapPin className="size-4" aria-hidden="true" />
+                <label htmlFor="manual-location" className="sr-only">Enter your area or city</label>
+                <input
+                  id="manual-location"
+                  autoFocus
+                  value={locationQuery}
+                  onChange={(event) => setLocationQuery(event.target.value)}
+                  placeholder="Enter area, landmark or city"
+                  autoComplete="off"
+                />
+                {isResolvingLocation ? <LoaderCircle className="size-4 animate-spin" /> : (
+                  <button type="button" onClick={() => setShowLocationSearch(false)} aria-label="Close location search"><X className="size-4" /></button>
+                )}
+              </div>
+              {locationSuggestions.length ? (
+                <ul className="location-suggestions" aria-label="Suggested locations">
+                  {locationSuggestions.map((suggestion) => (
+                    <li key={suggestion.id}>
+                      <button type="button" onClick={() => selectLocation(suggestion)} disabled={isResolvingLocation}>
+                        <MapPin className="size-4" aria-hidden="true" />
+                        <span>{suggestion.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : locationQuery.trim().length >= 2 ? (
+                <p className="location-picker-hint">Keep typing to find your area…</p>
+              ) : (
+                <p className="location-picker-hint">Suggestions will appear as you type.</p>
+              )}
+            </div>
+          ) : null}
 
           <p aria-live="polite" className="mt-3 min-h-6 text-sm font-medium text-violet-700">
             {message}
