@@ -65,11 +65,20 @@ export default function Home() {
             Your neighbourhood, one request away
           </div>
 
-          <img
-            src="/zndux-logo.jpeg"
-            alt="Zndux"
-            className="mb-7 size-32 rounded-[2rem] object-cover shadow-[0_18px_55px_rgba(104,39,146,0.13)] sm:size-40"
-          />
+          <div className="relative mb-14 sm:mb-9">
+            <div className="anayah-avatar-ring size-40 sm:size-48">
+              <div className="size-full overflow-hidden rounded-full bg-white">
+                <img
+                  src="/zndux-logo.jpeg"
+                  alt="Anayah, your Zndux assistant"
+                  className="size-full scale-[1.65] translate-y-[4%] object-cover"
+                />
+              </div>
+            </div>
+            <div className="anayah-bubble" role="status">
+              Hi, I’m <strong>Anayah.</strong> Zend me.
+            </div>
+          </div>
 
           <h1 className="text-balance text-[clamp(2.35rem,7vw,4.75rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-slate-950">
             What do you need <span className="gradient-text">nearby?</span>

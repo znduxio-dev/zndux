@@ -134,6 +134,77 @@ summary:focus-visible {
   color: transparent;
 }
 
+.anayah-avatar-ring {
+  border-radius: 999px;
+  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 55%, #ff8412 100%);
+  padding: 5px;
+  box-shadow:
+    0 22px 60px rgba(104, 39, 146, 0.18),
+    0 0 0 7px rgba(255, 255, 255, 0.72);
+}
+
+.anayah-bubble {
+  position: absolute;
+  bottom: -2.25rem;
+  left: 50%;
+  width: max-content;
+  max-width: min(15rem, 78vw);
+  transform: translateX(-50%);
+  border: 1px solid rgba(226, 214, 235, 0.95);
+  border-radius: 1rem 1rem 1rem 0.35rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.7rem 0.95rem;
+  color: #4b2a5f;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  box-shadow: 0 12px 32px rgba(58, 27, 77, 0.13);
+  animation: anayah-pop 420ms cubic-bezier(0.2, 0.85, 0.25, 1.2) both;
+}
+
+.anayah-bubble strong {
+  color: #762ca6;
+}
+
+@media (min-width: 640px) {
+  .anayah-bubble {
+    top: 2.15rem;
+    bottom: auto;
+    left: calc(100% - 0.7rem);
+    transform: none;
+  }
+}
+
+@keyframes anayah-pop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0.5rem) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@media (min-width: 640px) {
+  @keyframes anayah-pop {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem) scale(0.88);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anayah-bubble {
+    animation: none;
+  }
+}
+
 .search-surface {
   display: flex;
   align-items: center;
