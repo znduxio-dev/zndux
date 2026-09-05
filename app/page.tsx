@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import {
-  ArrowRight,
   Bike,
   BriefcaseBusiness,
   MapPin,
@@ -110,9 +109,11 @@ export default function Home() {
                 className="h-12 min-w-0 flex-1 bg-transparent text-base text-slate-900 outline-none placeholder:text-slate-400"
               />
             </div>
-            <button type="submit" className="search-button" aria-label="Find service">
-              <span className="hidden sm:inline">Find service</span>
-              <ArrowRight className="size-5" />
+            <button type="submit" className="search-button" aria-label="Zend me">
+              <span className="hidden sm:inline">Zend me</span>
+              <span aria-hidden="true" className="search-button-avatar">
+                <img src="/zndux-logo.jpeg" alt="" />
+              </span>
             </button>
           </form>
 

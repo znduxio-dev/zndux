@@ -302,19 +302,38 @@ summary:focus-visible {
   justify-content: center;
   gap: 0.5rem;
   border: 0;
-  border-radius: 1rem;
-  background: linear-gradient(120deg, #6f2da8, #8c36b5);
+  border-radius: 999px;
+  background: linear-gradient(100deg, #6f2da8 5%, #d20b72 58%, #f06b22 100%);
   padding: 0 1.15rem;
   color: white;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(111, 45, 168, 0.25);
+  box-shadow: 0 8px 20px rgba(159, 28, 117, 0.24);
   cursor: pointer;
   transition: 180ms ease;
 }
 
 .search-button:hover {
-  box-shadow: 0 12px 26px rgba(111, 45, 168, 0.3);
+  box-shadow: 0 12px 26px rgba(159, 28, 117, 0.3);
   transform: translateY(-1px);
+}
+
+.search-button-avatar {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  overflow: hidden;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: white;
+  box-shadow: 0 2px 7px rgba(38, 13, 54, 0.2);
+}
+
+.search-button-avatar img {
+  width: 100%;
+  height: 100%;
+  transform: translateY(4%) scale(1.7);
+  object-fit: cover;
 }
 
 .location-chip,
