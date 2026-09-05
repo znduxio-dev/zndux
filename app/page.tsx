@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 import {
+  BadgeCheck,
   Bike,
   BriefcaseBusiness,
+  Clock3,
   MapPin,
+  Navigation,
+  Phone,
   Search,
+  SlidersHorizontal,
   Sparkles,
+  Star,
   Utensils,
   Wrench,
 } from 'lucide-react';
@@ -23,10 +29,12 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [message, setMessage] = useState('');
   const [location, setLocation] = useState('Abuja, Nigeria');
+  const [submittedQuery, setSubmittedQuery] = useState('');
 
   function submitSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const need = query.trim();
+    setSubmittedQuery(need || 'trusted services');
     setMessage(
       need
         ? `Finding trusted ${need.toLowerCase()} near ${location}…`
@@ -54,7 +62,7 @@ export default function Home() {
     <main className="app-shell min-h-screen overflow-hidden">
       <SiteHeader active="app" />
 
-      <section className="relative flex min-h-[calc(100vh-84px)] flex-col items-center px-5 pb-10 pt-[clamp(4.5rem,14vh,9.5rem)] text-center">
+      <section className={`relative flex min-h-[calc(100vh-84px)] flex-col items-center px-5 pb-10 text-center ${submittedQuery ? 'pt-14 sm:pt-20' : 'pt-[clamp(4.5rem,14vh,9.5rem)]'}`}>
         <div aria-hidden="true" className="ambient ambient-one" />
         <div aria-hidden="true" className="ambient ambient-two" />
 
@@ -143,6 +151,80 @@ export default function Home() {
               </button>
             ))}
           </div>
+
+          {submittedQuery ? (
+            <section className="results-preview mt-12 w-full text-left" aria-label={`Search results for ${submittedQuery}`}>
+              <div className="results-toolbar">
+                <div>
+                  <span className="results-eyebrow">Suggestions for you</span>
+                  <h2>Closest matches near {location}</h2>
+                  <p>Showing the best mix of proximity, trust and reviews for “{submittedQuery}”.</p>
+                </div>
+                <button type="button" className="results-filter"><SlidersHorizontal className="size-4" /> Filters</button>
+              </div>
+
+              <div className="results-grid">
+                <article className="result-card result-card-featured">
+                  <div className="result-image-wrap">
+                    <img src="/services-artisan.jpg" alt="Musa from QuickFix Home Services at work" />
+                    <span className="result-distance"><Navigation className="size-3" /> 0.8 km</span>
+                  </div>
+                  <div className="result-card-content">
+                    <div className="result-source result-source-zndux"><BadgeCheck className="size-3.5" /> Verified on Zndux</div>
+                    <div className="result-title-row">
+                      <div>
+                        <h3>Musa QuickFix</h3>
+                        <p>Plumbing · Repairs · Emergency call-outs</p>
+                      </div>
+                      <span className="available-dot">Available now</span>
+                    </div>
+                    <div className="result-meta">
+                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.9</strong> (82)</span>
+                      <span><Clock3 className="size-4" /> Replies in about 5 mins</span>
+                    </div>
+                    <p className="result-note">“Fast, tidy and very professional. Fixed the leak on the first visit.”</p>
+                    <div className="result-actions">
+                      <a href="/services#provider-profile" className="result-secondary-action">View profile</a>
+                      <button type="button" className="primary-cta result-primary-action">
+                        Zend me
+                        <span className="search-button-avatar"><img src="/zndux-logo.jpeg" alt="" /></span>
+                      </button>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="result-card">
+                  <div className="result-image-wrap">
+                    <img src="/about-find-service.jpg" alt="A local home-service professional" />
+                    <span className="result-distance"><Navigation className="size-3" /> 1.4 km</span>
+                  </div>
+                  <div className="result-card-content">
+                    <div className="result-source result-source-google">G&nbsp; Listed on Google</div>
+                    <div className="result-title-row">
+                      <div>
+                        <h3>Apex Home Care</h3>
+                        <p>Home services · Wuse 2, Abuja</p>
+                      </div>
+                      <span className="open-dot">Open now</span>
+                    </div>
+                    <div className="result-meta">
+                      <span><Star className="size-4 fill-amber-400 text-amber-400" /> <strong>4.7</strong> (146 Google reviews)</span>
+                    </div>
+                    <p className="result-note">Business details and opening hours are supplied by Google.</p>
+                    <div className="result-actions">
+                      <button type="button" className="result-secondary-action"><Phone className="size-4" /> Call</button>
+                      <button type="button" className="primary-cta result-primary-action"><Navigation className="size-4" /> Directions</button>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div className="results-legend">
+                <span><BadgeCheck className="size-4 text-violet-600" /> Zndux providers can receive requests directly.</span>
+                <span><span className="google-g">G</span> Google listings open through call or directions.</span>
+              </div>
+            </section>
+          ) : null}
         </div>
 
         <div className="relative z-10 mt-auto pt-16 text-xs text-slate-400">

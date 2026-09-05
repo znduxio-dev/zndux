@@ -4,14 +4,21 @@ import { useState } from 'react';
 import Image from 'next/image';
 import {
   ArrowRight,
+  BadgeCheck,
   Bike,
   BriefcaseBusiness,
+  Camera,
   CheckCircle2,
+  Clock3,
+  FileCheck2,
   HeartPulse,
   House,
+  MapPin,
   Scissors,
+  ShieldCheck,
   ShoppingBag,
   Sparkles,
+  Star,
   Utensils,
   Wrench,
 } from 'lucide-react';
@@ -38,17 +45,30 @@ export default function ServicesPage() {
 
       <section className="px-5 pb-16 pt-16 sm:px-8 sm:pb-24 sm:pt-24 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <div className="section-kicker">
-              <Sparkles className="size-4" />
-              Explore services
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="max-w-3xl">
+              <div className="section-kicker">
+                <Sparkles className="size-4" />
+                Explore services
+              </div>
+              <h1 className="page-heading mt-6">
+                The right help, <span className="gradient-text">right around you.</span>
+              </h1>
+              <p className="page-intro mt-6">
+                From lunch to an urgent repair, Zndux helps you discover trusted local providers without the usual runaround.
+              </p>
             </div>
-            <h1 className="page-heading mt-6">
-              The right help, <span className="gradient-text">right around you.</span>
-            </h1>
-            <p className="page-intro mt-6">
-              From lunch to an urgent repair, Zndux helps you discover trusted local providers without the usual runaround.
-            </p>
+
+            <figure className="services-hero-visual">
+              <Image
+                src="/services-hero.jpg"
+                alt="A colourful selection of food, fashion, repair, technology and shopping services available through Zndux"
+                width={1400}
+                height={1400}
+                sizes="(min-width: 1024px) 44vw, 100vw"
+                priority
+              />
+            </figure>
           </div>
 
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -61,6 +81,30 @@ export default function ServicesPage() {
                   Find providers <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </span>
               </a>
+            ))}
+          </div>
+
+          <div className="services-showcase-heading">
+            <span>Everyday requests, made simpler</span>
+            <p>Ask through a familiar channel and connect with the local service you need.</p>
+          </div>
+
+          <div className="services-showcase" aria-label="Examples of services available through Zndux">
+            {[
+              ['/services-food.jpg', 'Order from a local food vendor'],
+              ['/services-delivery.jpg', 'Arrange pickup and delivery'],
+              ['/services-artisan.jpg', 'Reach a skilled artisan nearby'],
+            ].map(([src, caption]) => (
+              <figure key={caption} className="services-showcase-card">
+                <Image
+                  src={src}
+                  alt={caption}
+                  width={1100}
+                  height={1100}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+                <figcaption>{caption}</figcaption>
+              </figure>
             ))}
           </div>
         </div>
@@ -95,6 +139,63 @@ export default function ServicesPage() {
                 </li>
               ))}
             </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="provider-profile" className="provider-journey-section px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="provider-journey-heading">
+            <div>
+              <span className="section-kicker"><BadgeCheck className="size-4" /> Zndux provider profile</span>
+              <h2>From local talent to a profile people trust.</h2>
+            </div>
+            <p>A provider gives Zndux the details customers need to decide confidently. Anaiyah turns those details into a clear, searchable profile.</p>
+          </div>
+
+          <div className="provider-journey-grid">
+            <ol className="provider-profile-steps">
+              {[
+                ['01', 'Create your identity', 'Add your name, service category, contact details and a friendly profile photo.', Camera],
+                ['02', 'Set your service area', 'Choose where you work, how far you travel and when customers can reach you.', MapPin],
+                ['03', 'Show your work', 'Add services, starting prices, work photos and the way you prefer to receive requests.', FileCheck2],
+                ['04', 'Verify and go live', 'Zndux reviews your details, adds your trust badge and makes you discoverable nearby.', ShieldCheck],
+              ].map(([number, title, copy, Icon]) => (
+                <li key={number as string}>
+                  <span className="provider-step-number">{number as string}</span>
+                  <span className="provider-step-icon"><Icon className="size-5" /></span>
+                  <div><h3>{title as string}</h3><p>{copy as string}</p></div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="provider-profile-demo">
+              <div className="provider-demo-topline">
+                <span>Customer view</span>
+                <span className="provider-live-pill"><span /> Profile live</span>
+              </div>
+              <div className="provider-demo-cover">
+                <img src="/services-artisan.jpg" alt="Musa from QuickFix Home Services" />
+                <div className="provider-demo-avatar">MQ</div>
+              </div>
+              <div className="provider-demo-body">
+                <div className="provider-demo-title">
+                  <div><h3>Musa QuickFix <BadgeCheck className="size-5" /></h3><p>Plumbing and home repairs</p></div>
+                  <span>0.8 km</span>
+                </div>
+                <div className="provider-demo-stats">
+                  <span><Star className="size-4 fill-amber-400 text-amber-400" /><strong>4.9</strong><small>82 reviews</small></span>
+                  <span><Clock3 className="size-4 text-violet-600" /><strong>~5 min</strong><small>response time</small></span>
+                  <span><CheckCircle2 className="size-4 text-emerald-600" /><strong>126</strong><small>jobs completed</small></span>
+                </div>
+                <p className="provider-demo-bio">Reliable plumbing and general home repairs across Wuse, Maitama and nearby areas. Available for scheduled and urgent call-outs.</p>
+                <div className="provider-demo-tags"><span>Leak repairs</span><span>Installations</span><span>Emergency visits</span></div>
+                <button type="button" className="primary-cta provider-demo-cta">
+                  Zend Musa
+                  <span className="search-button-avatar"><img src="/zndux-logo.jpeg" alt="" /></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

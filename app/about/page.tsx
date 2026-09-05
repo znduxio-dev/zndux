@@ -1,4 +1,5 @@
 import { ArrowRight, Globe2, MapPin, MessageCircleMore, ShieldCheck, UsersRound } from 'lucide-react';
+import Image from 'next/image';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 
@@ -20,9 +21,20 @@ export default function AboutPage() {
             <a href="/" className="primary-cta mt-9 inline-flex">Find a service <ArrowRight className="size-4" /></a>
           </div>
 
-          <div className="brand-story-card">
-            <img src="/zndux-brand-story.jpeg" alt="The Zndux symbol combines the letter Z with a connection link" />
-          </div>
+          <figure className="about-hero-visual">
+            <Image
+              src="/about-find-service.jpg"
+              alt="A customer looking for help connected to nearby service providers through Zndux"
+              width={1400}
+              height={1400}
+              sizes="(min-width: 1024px) 44vw, 100vw"
+              priority
+            />
+            <figcaption>
+              <span>Made for real needs</span>
+              Find the right person, right around you.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -54,19 +66,48 @@ export default function AboutPage() {
               );
             })}
           </div>
+
+          <div className="about-service-gallery" aria-label="Local services connected by Zndux">
+            {[
+              ['/about-local-food.jpg', 'Food & hospitality', 'Discover something good nearby.'],
+              ['/about-local-delivery.jpg', 'Delivery & errands', 'Get local help moving things.'],
+              ['/about-local-tailor.jpg', 'Skilled artisans', 'Find the craft your job needs.'],
+            ].map(([src, title, copy]) => (
+              <figure key={title} className="about-gallery-card">
+                <Image
+                  src={src}
+                  alt={`${title} provider featured by Zndux`}
+                  width={1100}
+                  height={1100}
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+                <figcaption>
+                  <strong>{title}</strong>
+                  <span>{copy}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <div className="rounded-[2rem] bg-gradient-to-br from-[#6f2da8] via-[#822da0] to-[#c52a76] px-7 py-16 text-white sm:px-14 lg:px-20">
-            <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-end">
+          <div className="about-network-panel">
+            <div className="grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
+              <div className="about-network-image">
+                <Image
+                  src="/about-connected-channels.jpg"
+                  alt="A Zndux user surrounded by familiar social and messaging channels"
+                  width={1300}
+                  height={1300}
+                  sizes="(min-width: 1024px) 38vw, 100vw"
+                />
+              </div>
               <div>
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-violet-100"><Globe2 className="size-4" /> The bigger picture</span>
                 <h2 className="mt-6 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">One network. Many ways to connect.</h2>
-              </div>
-              <div>
-                <p className="text-lg leading-8 text-violet-50">Zndux begins with immediate local needs and grows toward an inclusive network where access is not limited by device, platform or industry.</p>
+                <p className="mt-7 text-lg leading-8 text-violet-50">Zndux begins with immediate local needs and grows toward an inclusive network where access is not limited by device, platform or industry.</p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   {['Customers', 'Local businesses', 'Artisans', 'Communities'].map((item) => (
                     <span key={item} className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-semibold"><UsersRound className="size-4" />{item}</span>
