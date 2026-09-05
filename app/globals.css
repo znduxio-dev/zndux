@@ -1052,7 +1052,9 @@ summary:focus-visible {
 
 @media (min-width: 920px) {
   .provider-setup-shell { grid-template-columns: 20rem 1fr; gap: 2.5rem; padding-block: 1.5rem 4rem; }
-  .provider-setup-sidebar { position: sticky; top: 1.5rem; display: flex; height: calc(100vh - 3rem); flex-direction: column; justify-content: space-between; border-radius: 2rem; background: #1a1320; padding: 1.5rem; color: white; box-shadow: 0 24px 70px rgba(30,19,37,.18); }
+  .provider-setup-sidebar { display: flex; height: auto; align-self: stretch; flex-direction: column; justify-content: flex-start; gap: 1.4rem; border-radius: 2rem; background: #1a1320; padding: 1.5rem; color: white; box-shadow: 0 24px 70px rgba(30,19,37,.18); }
+  .provider-setup-sidebar ol { gap: .4rem; }
+  .provider-progress { margin-top: auto; }
   .provider-mobile-progress { display: none; }
   .provider-form-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .provider-field-wide { grid-column: 1 / -1; }

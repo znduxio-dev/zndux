@@ -13,10 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zndux.steady-lemon-5001.chatgpt.site'),
+  metadataBase: new URL('https://zndux.sirfitech.chatgpt.site'),
   title: 'Zndux — Find trusted services near you',
   description:
     'Find trusted food vendors, artisans, logistics and professional services around you through your preferred channel.',
+  icons: {
+    icon: [{ url: '/zndux-logo.jpeg', type: 'image/jpeg' }],
+    shortcut: '/zndux-logo.jpeg',
+    apple: '/zndux-logo.jpeg',
+  },
   openGraph: {
     title: 'Zndux — What do you need nearby?',
     description: 'Find trusted local services with Zndux.',
