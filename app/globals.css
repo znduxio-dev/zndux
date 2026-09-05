@@ -309,8 +309,16 @@ summary:focus-visible {
 }
 
 .search-surface:focus-within {
-  border-color: rgba(199, 189, 207, 0.95);
+  border-color: rgba(219, 211, 227, 0.95);
   box-shadow: 0 22px 60px rgba(58, 27, 77, 0.11), 0 3px 12px rgba(58, 27, 77, 0.04);
+  outline: none;
+}
+
+.search-surface input:focus,
+.search-surface input:focus-visible {
+  outline: none;
+  outline-offset: 0;
+  box-shadow: none;
 }
 
 .search-button {
