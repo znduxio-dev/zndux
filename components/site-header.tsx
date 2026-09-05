@@ -14,8 +14,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
   return (
     <header className="relative z-50 flex h-[84px] items-center justify-between px-5 sm:px-8 lg:px-12">
       <a href="/" className="flex items-center gap-3" aria-label="Zndux home">
-        <img src="/zndux-logo.jpeg" alt="" className="size-10 rounded-xl object-cover" />
-        <span className="text-lg font-bold tracking-[0.24em] text-slate-950">ZNDUX</span>
+        <img src="/zndux-brand-logo.jpeg" alt="Zndux" className="zndux-brand-mark" />
       </a>
 
       <nav aria-label="Primary navigation" className="nav-pill hidden items-center sm:flex">

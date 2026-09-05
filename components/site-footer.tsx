@@ -6,8 +6,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <a href="/" className="inline-flex items-center gap-3" aria-label="Zndux home">
-            <img src="/zndux-logo.jpeg" alt="" className="size-10 rounded-xl object-cover" />
-            <span className="text-lg font-bold tracking-[0.24em] text-slate-950">ZNDUX</span>
+            <img src="/zndux-brand-logo.jpeg" alt="Zndux" className="zndux-brand-mark zndux-brand-mark-footer" />
           </a>
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-500">
             Connecting people to trusted products and services around them, through the channels they already use.

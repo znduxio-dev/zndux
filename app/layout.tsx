@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   description:
     'Find trusted food vendors, artisans, logistics and professional services around you through your preferred channel.',
   icons: {
-    icon: [{ url: '/zndux-logo.jpeg', type: 'image/jpeg' }],
-    shortcut: '/zndux-logo.jpeg',
-    apple: '/zndux-logo.jpeg',
+    icon: [{ url: '/zndux-brand-logo.jpeg', type: 'image/jpeg' }],
+    shortcut: '/zndux-brand-logo.jpeg',
+    apple: '/zndux-brand-logo.jpeg',
   },
   openGraph: {
     title: 'Zndux — What do you need nearby?',

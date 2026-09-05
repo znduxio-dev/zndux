@@ -92,7 +92,10 @@ export default function ProviderSetupPage() {
 
   return (
     <main className="provider-portal min-h-screen">
-      <SiteHeader active="provider" />
+      <header className="provider-setup-topbar">
+        <a href="/" aria-label="Zndux home"><img src="/zndux-brand-logo.jpeg" alt="Zndux" className="zndux-brand-mark" /></a>
+        <span>Provider profile setup</span>
+      </header>
       <section className="provider-setup-shell">
         <aside className="provider-setup-sidebar">
           <a href="/provider" onClick={(event) => { event.preventDefault(); setScreen('access'); }} className="provider-back-link"><ArrowLeft className="size-4" /> Exit setup</a>
