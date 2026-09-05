@@ -53,18 +53,18 @@ export default function ProviderSetupPage() {
             </div>
           </div>
 
-          <form className="provider-access-card" onSubmit={(event) => { event.preventDefault(); setScreen('setup'); }}>
+          <form className="provider-access-card" onSubmit={(event) => { event.preventDefault(); window.location.href = '/provider/dashboard'; }}>
             <div className="provider-access-avatar"><img src="/zndux-logo.jpeg" alt="Anaiyah" /></div>
             <span className="provider-access-overline">Provider access</span>
-            <h2>Welcome to your Zndux space.</h2>
-            <p>Anaiyah will guide you through setup. It takes about five minutes.</p>
+            <h2>Welcome back to your Zndux space.</h2>
+            <p>Sign in to manage customer requests, availability, reviews and your public profile.</p>
             <label htmlFor="provider-access-contact">Phone number or email</label>
             <input id="provider-access-contact" type="text" defaultValue="musa@example.com" required />
             <label htmlFor="provider-access-code">Access code</label>
             <div className="provider-code-input"><LockKeyhole className="size-4" /><input id="provider-access-code" type="password" defaultValue="123456" required /></div>
-            <button type="submit" className="primary-cta provider-access-cta">Continue to profile setup <ArrowRight className="size-4" /></button>
-            <button type="button" className="provider-text-button">I’m new — request provider access</button>
-            <small>Demo access is pre-filled so you can walk through the experience.</small>
+            <button type="submit" className="primary-cta provider-access-cta">Sign in to provider dashboard <ArrowRight className="size-4" /></button>
+            <button type="button" className="provider-text-button" onClick={() => setScreen('setup')}>I’m new — create my provider profile</button>
+            <small>Demo sign-in is pre-filled. New providers can begin setup using the link above.</small>
           </form>
         </section>
       </main>

@@ -133,16 +133,16 @@ summary:focus-visible {
 
 .zndux-brand-mark {
   display: block;
-  width: 4.25rem;
-  height: 3.25rem;
-  border-radius: .65rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 999px;
   background: white;
   object-fit: contain;
 }
 
 .zndux-brand-mark-footer {
-  width: 4.6rem;
-  height: 3.5rem;
+  width: 3.6rem;
+  height: 3.6rem;
 }
 
 .gradient-text {
@@ -1067,7 +1067,7 @@ summary:focus-visible {
 .provider-consent input { accent-color: #762faa; }
 
 @media (min-width: 920px) {
-  .provider-setup-shell { min-height: 0; grid-template-columns: 18.5rem 1fr; gap: 2rem; padding-block: .75rem 4rem; }
+  .provider-setup-shell { min-height: 0; grid-template-columns: 18.5rem 1fr; gap: .9rem; padding-block: .75rem 4rem; }
   .provider-setup-sidebar { display: flex; height: fit-content; align-self: start; flex-direction: column; justify-content: flex-start; gap: .95rem; border-radius: 1.6rem; background: #1a1320; padding: 1.2rem; color: white; box-shadow: 0 24px 70px rgba(30,19,37,.18); }
   .provider-setup-sidebar h1 { font-size: 1.55rem; }
   .provider-setup-sidebar > div > p { margin-top: .55rem; line-height: 1.5; }
@@ -1152,7 +1152,7 @@ summary:focus-visible {
 .provider-dashboard-nav { position: fixed; z-index: 80; top: 0; bottom: 0; left: 0; display: flex; width: 17.5rem; flex-direction: column; border-right: 1px solid rgba(255,255,255,.08); background: #19121e; padding: 1.1rem; color: white; transform: translateX(-105%); transition: transform 220ms ease; }
 .provider-dashboard-nav.is-open { transform: translateX(0); }
 .provider-dashboard-logo { display: inline-flex; width: fit-content; }
-.provider-dashboard-logo img { display: block; width: 4.6rem; height: 3.5rem; border-radius: .7rem; background: white; object-fit: contain; }
+.provider-dashboard-logo img { display: block; width: 3.6rem; height: 3.6rem; border-radius: 999px; background: white; object-fit: contain; }
 .provider-dashboard-account { display: flex; align-items: center; gap: .65rem; margin-top: 1.2rem; border: 1px solid rgba(255,255,255,.09); border-radius: 1rem; background: rgba(255,255,255,.055); padding: .7rem; }
 .provider-dashboard-account > span { display: grid; width: 2.35rem; height: 2.35rem; flex-shrink: 0; place-items: center; border-radius: .75rem; background: var(--zndux-button-gradient); font-size: .68rem; font-weight: 850; }
 .provider-dashboard-account div { display: grid; min-width: 0; }
