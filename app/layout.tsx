@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zndux.sirfitech.chatgpt.site'),
+  metadataBase: new URL('https://zndux.io'),
   title: 'Zndux — Find trusted services near you',
   description:
     'Find trusted food vendors, artisans, logistics and professional services around you through your preferred channel.',
